@@ -1,0 +1,94 @@
+# ================================================
+# YOLOv11 Drone Detection Project .gitignore
+# ================================================
+
+# 🗂️ 대용량 데이터셋 (전체 제외)
+dataset/
+data/
+rawdata/
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.json
+# 예외: 중요한 설정 파일들은 포함
+!package.json
+!tsconfig.json
+!configs/*.json
+
+# 🏃 학습 결과물 (선택적 제외)
+runs/
+# 예외: 최신 실험만 포함
+!runs/train/
+!runs/train/2. finetune_best_30ep/
+!runs/train/2. finetune_best_30ep/**
+
+# 📊 W&B 로그 (선택적 제외)
+wandb/
+# 예외: 최신 run만 포함 (현재 최신: run-20250919_183148-bv3jnbhv)
+!wandb/run-20250919_183148-bv3jnbhv/
+!wandb/run-20250919_183148-bv3jnbhv/**
+!wandb/latest-run
+!wandb/debug.log
+!wandb/debug-internal.log
+
+# 🏋️ 모델 가중치 (큰 파일)
+*.pt
+*.pth
+*.onnx
+# 예외: 작은 초기 모델은 포함
+!models/yolo11n.pt
+
+# 🗑️ 캐시 및 임시 파일
+*.cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.log
+logs/
+
+# 💻 시스템 파일
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# 🔧 IDE 설정
+.idea/
+.vscode/
+*.iml
+*.sublime-*
+
+# 🐍 Python 환경
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+*.egg
+*.egg-info/
+dist/
+build/
+
+# 📦 압축 파일
+*.zip
+*.tar.gz
+*.rar
+
+# ✅ 항상 포함할 파일들
+!configs/*.yaml
+!scripts/*.py
+!utils/*.py
+!utils/**/*.py
+!*.sh
+!*.md
+!requirements.txt
+!.gitignore

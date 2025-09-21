@@ -1,0 +1,115 @@
+# Weights & Biases (W&B) 설정
+# YOLOv11 드론 이미지 탐지 프로젝트
+
+# W&B 프로젝트 설정
+project: "YOLOv11-Drone-Detection"
+entity: hyunwoo220  # W&B 팀/사용자 이름 (null이면 기본 계정)
+name: null  # 실행 이름 (null이면 자동 생성)
+tags:
+  - yolov11
+  - drone
+  - crack-detection
+  - efflorescence
+  - spalling
+  - object-detection
+
+# 로깅 설정
+log_model: true  # 모델 체크포인트 로깅
+log_artifacts: true  # 아티팩트 로깅
+log_dataset: false  # 데이터셋 로깅 (대용량일 경우 false 권장)
+upload_dataset: false  # 데이터셋 업로드
+
+# 모니터링할 메트릭 (설명 포함)
+metrics:
+  # 학습 손실 (낮을수록 좋음)
+  - train/box_loss      # 바운딩 박스 위치 손실 - 객체 위치 정확도
+  - train/cls_loss      # 분류 손실 - 클래스 예측 정확도 (균열/백태/박리)
+  - train/dfl_loss      # Distribution Focal Loss - 박스 경계 정밀도
+
+  # 검증 손실 (과적합 체크용)
+  - val/box_loss        # 검증셋 박스 손실 - train과 차이 크면 과적합
+  - val/cls_loss        # 검증셋 분류 손실 - train과 비교해 과적합 확인
+  - val/dfl_loss        # 검증셋 DFL 손실
+
+  # 성능 지표 (높을수록 좋음)
+  - metrics/precision   # 정밀도 - 예측한 것 중 맞은 비율 (오탐 적음)
+  - metrics/recall      # 재현율 - 실제 중 찾아낸 비율 (놓침 적음)
+  - metrics/mAP50       # IoU 0.5 기준 평균 정밀도 (일반적 성능)
+  - metrics/mAP50-95    # IoU 0.5-0.95 평균 정밀도 (엄격한 성능)
+
+  # 학습률 모니터링
+  - lr/pg0              # 파라미터 그룹 0 학습률 (backbone)
+  - lr/pg1              # 파라미터 그룹 1 학습률 (neck)
+  - lr/pg2              # 파라미터 그룹 2 학습률 (head)
+
+# 하이퍼파라미터 스윕 설정 (선택적)
+sweep_config:
+  method: bayes  # 최적화 방법: grid, random, bayes
+  metric:
+    name: metrics/mAP50-95
+    goal: maximize
+
+  parameters:
+    lr0:
+      min: 0.001
+      max: 0.1
+      distribution: log_uniform
+
+    momentum:
+      min: 0.8
+      max: 0.98
+      distribution: uniform
+
+    weight_decay:
+      min: 0.0001
+      max: 0.01
+      distribution: log_uniform
+
+    warmup_epochs:
+      min: 1.0
+      max: 5.0
+      distribution: uniform
+
+    box:
+      min: 5.0
+      max: 10.0
+      distribution: uniform
+
+    cls:
+      min: 0.3
+      max: 1.0
+      distribution: uniform
+
+    mosaic:
+      values: [0.5, 0.75, 1.0]
+
+    mixup:
+      values: [0.0, 0.1, 0.2]
+
+    copy_paste:
+      values: [0.0, 0.1, 0.2]
+
+    degrees:
+      min: 0.0
+      max: 30.0
+      distribution: uniform
+
+    scale:
+      min: 0.3
+      max: 0.7
+      distribution: uniform
+
+# 경고 설정
+alert_config:
+  alert_on_crash: true
+  alert_on_finish: false
+
+# 추가 설정
+save_code: true  # 코드 저장
+anonymous: false  # 익명 모드
+force: false  # 강제 동기화
+sync_tensorboard: false  # TensorBoard 동기화
+monitor_gym: false  # Gym 환경 모니터링
+save_model: true  # 모델 저장
+notes: "YOLOv11n model training for drone-captured infrastructure defect detection"
+job_type: "training"

@@ -1,0 +1,72 @@
+# ================================================
+# YOLOv11 클라우드 GPU 전용 설정
+# ================================================
+# DPG, Colab, AWS, GCP 등 클라우드 환경 최적화
+
+# 디바이스 설정 - 클라우드 GPU
+device: 0  # 단일 GPU (멀티 GPU 제공시: '0,1,2,3')
+
+# 클라우드 최적화 설정 (대용량 GPU 가정)
+batch_size: 64  # 클라우드 GPU는 대부분 고성능
+workers: 32  # 클라우드는 CPU 코어 많음
+amp: true  # AMP 활성화
+
+# 기본 학습 설정
+epochs: 200  # 클라우드는 장시간 학습 가능
+imgsz: 1280  # 고해상도 학습 가능
+patience: 50
+save_period: 20  # 저장 주기 늘림 (스토리지 절약)
+
+# 학습률 설정 (대용량 배치에 맞게 조정)
+lr0: 0.01
+lrf: 0.01
+momentum: 0.937
+weight_decay: 0.0005
+optimizer: 'AdamW'
+
+# Warmup 설정
+warmup_epochs: 5.0  # 긴 학습에 맞게 증가
+warmup_momentum: 0.8
+warmup_bias_lr: 0.1
+
+# 손실 가중치
+box: 7.5
+cls: 0.5
+dfl: 1.5
+label_smoothing: 0.0
+nbs: 64
+
+# 데이터 증강 - 색상
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+
+# 데이터 증강 - 기하학
+degrees: 15.0
+translate: 0.1
+scale: 0.5
+shear: 2.0
+perspective: 0.001
+flipud: 0.0
+fliplr: 0.5
+
+# 고급 증강 (클라우드는 적극 활용)
+mosaic: 1.0
+mixup: 0.2  # 증가
+copy_paste: 0.2  # 증가
+close_mosaic: 20  # 긴 학습에 맞게
+
+# 기타 설정
+cos_lr: true  # 긴 학습에 유리
+resume: true  # 중단 시 재개 가능
+fraction: 1.0
+single_cls: false
+rect: false
+val: true
+plots: true
+cache: true  # 클라우드는 메모리 충분
+
+# 클라우드 전용 추가 설정
+save: true
+exist_ok: true  # 기존 폴더 덮어쓰기
+verbose: true  # 상세 로그 출력

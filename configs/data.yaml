@@ -1,0 +1,14 @@
+# 완벽한 YOLO 데이터셋 설정
+path: /Users/hyunwoo/Desktop/DroneProject/yolov11_project/dataset
+train: train
+val: val
+test: test
+
+# 클래스 수
+nc: 3
+
+# 클래스 이름
+names:
+  0: ConcreteCrack      # 균열
+  1: Efflorescene       # 백태누수 (원본 오타 포함)
+  2: Spalling           # 박리

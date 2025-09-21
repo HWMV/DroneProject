@@ -1,0 +1,67 @@
+# ================================================
+# YOLOv11 Mac - 데이터 증강 적용 버전
+# ================================================
+# 논문 기반 데이터 증강 실험용 (필요한 증강 기법 자유 수정)
+
+# 디바이스 설정 - Mac 전용
+device: mps  # Apple Silicon GPU 사용
+
+# Mac 최적화 설정
+batch_size: 8  # Mac은 메모리 제한으로 작게 설정 (4-16)
+workers: 4  # Mac CPU 코어에 맞게 조정 (4-8)
+amp: false  # MPS는 AMP 미지원
+
+# 기본 학습 설정
+epochs: 10
+imgsz: 640
+patience: 50
+save_period: 10
+
+# 학습률 설정
+lr0: 0.005
+lrf: 0.0005
+momentum: 0.937
+weight_decay: 0.0005
+optimizer: 'AdamW'
+
+# Warmup 설정
+warmup_epochs: 3.0
+warmup_momentum: 0.8
+warmup_bias_lr: 0.1
+
+# 손실 가중치
+box: 7.5
+cls: 0.5
+dfl: 1.5
+label_smoothing: 0.0
+nbs: 64
+
+# 데이터 증강 - 색상
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+
+# 데이터 증강 - 기하학
+degrees: 15.0
+translate: 0.1
+scale: 0.5
+shear: 2.0
+perspective: 0.001
+flipud: 0.0
+fliplr: 0.5
+
+# 고급 증강
+mosaic: 1.0
+mixup: 0.1
+copy_paste: 0.1
+close_mosaic: 10
+
+# 기타 설정
+cos_lr: false
+resume: false
+fraction: 1.0
+single_cls: false
+rect: false
+val: true
+plots: true
+cache: true  # Mac은 캐싱 권장 (속도 향상)
